@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import { getCurrentUser } from "@/features/auth/server/getCurrentUser"
-import { notFound } from "next/navigation"
+import { redirect } from "next/navigation"
 
 export default async function PrivateLayout({
   children,
@@ -8,7 +8,7 @@ export default async function PrivateLayout({
   children: Readonly<ReactNode>
 }) {
   const user = await getCurrentUser()
-  if (user == null) return notFound()
+  if (user == null) return redirect("/login")
 
   return <>{children}</>
 }
