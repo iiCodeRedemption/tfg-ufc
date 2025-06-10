@@ -1,22 +1,6 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
-import { createRouteMatcher } from "@/lib/route-matcher"
 import { env } from "@/data/env/server"
-
-const isPublic = createRouteMatcher([
-  "/",
-  "/login",
-  "/register",
-  "/about",
-  "/terms",
-  "/auth/callback",
-  "/events",
-  "/events/:id",
-  "/fighters",
-  "/fighters/:id",
-  "/fights",
-  "/fights/:id",
-])
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -48,15 +32,7 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!isPublic(request.nextUrl.pathname) && user == null) {
-    const url = request.nextUrl.clone()
-    url.pathname = "/login"
-    return NextResponse.redirect(url)
-  }
+  await supabase.auth.getUser()
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:

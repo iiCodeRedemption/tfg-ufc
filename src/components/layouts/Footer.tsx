@@ -2,6 +2,7 @@ import { APP_NAME } from "@/data/constants/app"
 import {
   PROMOTION_NAMES,
   PROMOTIONS,
+  PROMOTION_URLS,
 } from "@/features/fighters/data/constants/promotions"
 import Link from "next/link"
 import { BugReportDialog } from "@/components/dialogs/BugReportDialog"
@@ -50,8 +51,12 @@ export function Footer() {
             {Object.entries(PROMOTION_NAMES).map(([promotionId]) => (
               <li key={promotionId}>
                 <Link
-                  href={`/fighters?promotion=${promotionId}`}
+                  href={
+                    PROMOTION_URLS[promotionId as keyof typeof PROMOTION_URLS]
+                  }
                   className={linkClass}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {PROMOTIONS[promotionId as keyof typeof PROMOTIONS]}
                 </Link>

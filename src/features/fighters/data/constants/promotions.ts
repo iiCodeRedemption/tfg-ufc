@@ -17,3 +17,9 @@ export const PROMOTION_NAMES = {
   [PROMOTIONS.ONE]: "ONE Championship",
   [PROMOTIONS.RIZIN]: "RIZIN Fighting Federation",
 } as const
+
+export const PROMOTION_URLS = {
+  [PROMOTIONS.UFC]: "https://ufc.com",
+  [PROMOTIONS.ONE]: "https://onefc.com",
+  [PROMOTIONS.RIZIN]: "https://rizin.tv",
+} as const
