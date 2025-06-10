@@ -5,7 +5,6 @@ import { EventGridSearchSkeleton } from "@/features/events/components/skeletons/
 import { getAllEvents } from "@/features/events/server/db/getAllEvents"
 
 export const metadata: Metadata = {
-  title: "UFC Demo | Events",
   description: "Browse upcoming and past MMA events across major promotions",
 }
 

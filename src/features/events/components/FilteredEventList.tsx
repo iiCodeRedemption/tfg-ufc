@@ -58,7 +58,7 @@ export function FilteredEventList({ events }: { events: Event[] }) {
 
       <Card className="w-full lg:w-2/3 p-5 rounded-2xl shadow-lg border-4 border-red-700">
         <CardContent className="p-5">
-          <EventList events={filteredEvents} />
+          <EventList />
         </CardContent>
       </Card>
     </div>
