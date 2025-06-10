@@ -9,26 +9,6 @@ import { getFighterById } from "@/features/fighters/server/db/getFighterById"
 import { UserIcon } from "lucide-react"
 import Link from "next/link"
 
-function StatCard({
-  title,
-  value,
-  suffix = "",
-}: {
-  title: string
-  value: string | number
-  suffix?: string
-}) {
-  return (
-    <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-red-950/30">
-      <h3 className="text-lg font-medium text-gray-400">{title}</h3>
-      <p className="text-3xl font-bold mt-2">
-        {value}
-        {suffix && <span className="text-xl ml-1 text-gray-400">{suffix}</span>}
-      </p>
-    </div>
-  )
-}
-
 export default async function FighterProfilePage({
   params,
 }: {
@@ -65,22 +45,11 @@ async function FighterHeader({ fighterId }: { fighterId: string }) {
     <div className="relative h-[400px] bg-gradient-to-br from-black via-red-950 to-black">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div className="relative z-10 max-w-4xl mx-auto px-4 h-full flex items-end justify-between pb-12">
-        <div className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-5xl font-bold text-white tracking-tight">
+        <div className="space-y-4 max-w-lg">
+          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight break-words">
               {fighter.name}
             </h1>
-            {user != null ? (
-              <FavoriteButton fighterId={fighterId} isFavorite={isFavorite} />
-            ) : (
-              <Link
-                href={`/login?redirectTo=${encodeURIComponent(`/fighters/${fighterId}`)}`}
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-300 bg-black/30 backdrop-blur-sm rounded-lg border border-red-950/30 hover:bg-black/40 transition-colors gap-2"
-              >
-                <UserIcon className="h-5 w-5" />
-                Login to favorite
-              </Link>
-            )}
           </div>
           {fighter.nickname && (
             <p className="text-2xl text-red-400 font-medium">
@@ -94,6 +63,21 @@ async function FighterHeader({ fighterId }: { fighterId: string }) {
                 svg
                 className="h-7 w-7 rounded-full shadow-lg ring-2 ring-red-500/20"
               />
+            )}
+            {user != null ? (
+              <div className="flex-shrink-0">
+                <FavoriteButton fighterId={fighterId} isFavorite={isFavorite} />
+              </div>
+            ) : (
+              <div className="flex-shrink-0">
+                <Link
+                  href={`/login?redirectTo=${encodeURIComponent(`/fighters/${fighterId}`)}`}
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-300 bg-black/30 backdrop-blur-sm rounded-lg border border-red-950/30 hover:bg-black/40 transition-colors gap-2"
+                >
+                  <UserIcon className="h-5 w-5" />
+                  Login to favorite
+                </Link>
+              </div>
             )}
           </div>
         </div>
@@ -113,7 +97,7 @@ async function FighterHeader({ fighterId }: { fighterId: string }) {
 
 async function FighterInfo({ fighterId }: { fighterId: string }) {
   const fighter = await getFighterById(fighterId)
-  if (!fighter) return notFound()
+  if (fighter == null) return notFound()
 
   return (
     <div className="bg-gradient-to-br from-gray-900 to-black backdrop-blur-sm rounded-xl shadow-xl p-8 border border-red-950/30 mt-8">
@@ -145,24 +129,11 @@ async function FighterInfo({ fighterId }: { fighterId: string }) {
   )
 }
 
-function FighterFightsSkeleton() {
-  return (
-    <div className="mt-12 space-y-4">
-      {[...Array(3)].map((_, i) => (
-        <div
-          key={i}
-          className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-red-950/30 animate-pulse h-20"
-        />
-      ))}
-    </div>
-  )
-}
-
 async function FighterFights({ fighterId }: { fighterId: string }) {
   const fighter = await getFighterById(fighterId)
   if (
-    !fighter ||
-    !fighter.fightParticipations ||
+    fighter == null ||
+    fighter.fightParticipations == null ||
     fighter.fightParticipations.length === 0
   ) {
     return (
@@ -246,6 +217,39 @@ function FighterInfoSkeleton() {
           <div className="h-16 bg-gray-800 rounded animate-pulse"></div>
         </div>
       </div>
+    </div>
+  )
+}
+
+function FighterFightsSkeleton() {
+  return (
+    <div className="mt-12 space-y-4">
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={i}
+          className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-red-950/30 animate-pulse h-20"
+        />
+      ))}
+    </div>
+  )
+}
+
+function StatCard({
+  title,
+  value,
+  suffix = "",
+}: {
+  title: string
+  value: string | number
+  suffix?: string
+}) {
+  return (
+    <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-red-950/30">
+      <h3 className="text-lg font-medium text-gray-400">{title}</h3>
+      <p className="text-3xl font-bold mt-2">
+        {value}
+        {suffix && <span className="text-xl ml-1 text-gray-400">{suffix}</span>}
+      </p>
     </div>
   )
 }
