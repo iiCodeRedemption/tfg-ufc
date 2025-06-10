@@ -4,7 +4,6 @@ import { getCurrentUser } from "@/features/auth/server/getCurrentUser"
 import { UserSkeleton } from "@/features/auth/components/skeletons/UserSkeleton"
 import { UserButton } from "@/features/auth/components/UserButton"
 import { AppLink } from "@/components/AppLink"
-import { Search } from "lucide-react"
 
 export async function Header() {
   return (
@@ -39,8 +38,7 @@ async function UserContent() {
       <button
         aria-label="Search"
         className="hover:text-[#d20a0a] transition-colors rounded-full p-2 hover:bg-[#1a1a1a]"
-      >
-      </button>
+      ></button>
     </>
   )
 }
