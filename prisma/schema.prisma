@@ -1,0 +1,265 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum FighterStatus {
+  ACTIVE
+  RETIRED
+  INACTIVE
+  CHAMPION
+}
+
+enum FightResult {
+  WIN
+  LOSS
+  DRAW
+  NO_CONTEST
+}
+
+enum FightMethod {
+  KO_TKO
+  SUBMISSION
+  DECISION
+}
+
+enum EventType {
+  UFC
+  RIZIN
+  ONE
+}
+
+enum FightType {
+  MAIN_EVENT
+  CO_MAIN_EVENT
+  PRELIMS
+  EARLY_PRELIMS
+}
+
+model User {
+  id String @id
+
+  username String   @unique
+  email    String   @unique
+  role     UserRole @default(USER)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  favorites   FighterFavorite[]
+  predictions FightPrediction[]
+
+  @@map("users")
+}
+
+model Fighter {
+  id String @id @default(cuid())
+
+  name        String        @unique
+  nickname    String?
+  description String?
+  imageUrl    String        @map("image_url")
+  countryCode String        @map("country_code")
+  height      Float?
+  reach       Float?
+  weight      Float?
+  stance      String?
+  gender      Gender        @default(MALE)
+  status      FighterStatus @default(ACTIVE)
+
+  ufcDetails   UFCFighter?
+  rizinDetails RIZINFighter?
+  oneDetails   ONEFighter?
+
+  fightsAsFighter  Fight[] @relation(name: "fighter_fights")
+  fightsAsOpponent Fight[] @relation(name: "fighter_opponents")
+
+  fightParticipations FightParticipant[]
+  predictions         FightPrediction[]
+  favorites           FighterFavorite[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@map("fighters")
+}
+
+model UFCFighter {
+  id String @id @default(cuid())
+
+  isP4P       Boolean @default(false) @map("is_p4p")
+  titleWins   Int     @default(0) @map("title_wins")
+  titleLosses Int     @default(0) @map("title_losses")
+
+  fighterId String  @unique @map("fighter_id")
+  fighter   Fighter @relation(fields: [fighterId], references: [id], onDelete: Cascade)
+
+  @@map("ufc_fighters")
+}
+
+model RIZINFighter {
+  id String @id @default(cuid())
+
+  gym       String?
+  city      String?
+  debutYear Int?    @map("debut_year")
+
+  fighterId String  @unique @map("fighter_id")
+  fighter   Fighter @relation(fields: [fighterId], references: [id], onDelete: Cascade)
+
+  @@map("rizin_fighters")
+}
+
+model ONEFighter {
+  id String @id @default(cuid())
+
+  gym           String?
+  birthLat      Float?  @map("birth_lat")
+  birthLong     Float?  @map("birth_long")
+  fightingStyle String? @map("fighting_style")
+
+  fighterId String  @unique @map("fighter_id")
+  fighter   Fighter @relation(fields: [fighterId], references: [id], onDelete: Cascade)
+
+  @@map("one_fighters")
+}
+
+model FighterFavorite {
+  id String @id @default(cuid())
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  fighterId String  @map("fighter_id")
+  fighter   Fighter @relation(fields: [fighterId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, fighterId])
+  @@map("fighter_favorites")
+}
+
+model Event {
+  id String @id @default(cuid())
+
+  name        String    @unique
+  description String?
+  date        DateTime
+  isPPV       Boolean   @default(false) @map("is_ppv")
+  price       Int?      @map("price") // in cents
+  promotion   EventType
+
+  latitude  Float?
+  longitude Float?
+
+  imageUrl String @map("image_url")
+
+  fights Fight[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@map("events")
+}
+
+model Fight {
+  id String @id @default(cuid())
+
+  fightType FightType @map("fight_type")
+
+  rounds            Int
+  championshipFight Boolean @default(false) @map("championship_fight")
+
+  fighter1Id String  @map("fighter1_id")
+  fighter1   Fighter @relation("fighter_fights", fields: [fighter1Id], references: [id], onDelete: Cascade)
+
+  fighter2Id String  @map("fighter2_id")
+  fighter2   Fighter @relation("fighter_opponents", fields: [fighter2Id], references: [id], onDelete: Cascade)
+
+  winnerId String?     @map("winner_id")
+  method   FightMethod
+
+  finishRound       Int? @map("finish_round")
+  finishTimeSeconds Int? @map("finish_time_seconds")
+
+  eventId String? @map("event_id")
+  event   Event?  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  statistics FightStatistics?
+
+  participants FightParticipant[]
+  predictions  FightPrediction[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@map("fights")
+}
+
+model FightStatistics {
+  id String @id @default(cuid())
+
+  totalStrikes1       Int @map("total_strikes1")
+  totalStrikes2       Int @map("total_strikes2")
+  sigStrikes1         Int @map("sig_strikes1")
+  sigStrikes2         Int @map("sig_strikes2")
+  takedowns1          Int @map("takedowns1")
+  takedowns2          Int @map("takedowns2")
+  submissionAttempts1 Int @map("submission_attempts1")
+  submissionAttempts2 Int @map("submission_attempts2")
+  knockdowns1         Int
+  knockdowns2         Int
+  reversals1          Int
+  reversals2          Int
+
+  fightId String @unique @map("fight_id")
+  fight   Fight  @relation(fields: [fightId], references: [id], onDelete: Cascade)
+
+  @@map("fight_statistics")
+}
+
+model FightParticipant {
+  id String @id @default(cuid())
+
+  fightId String @map("fight_id")
+  fight   Fight  @relation(fields: [fightId], references: [id], onDelete: Cascade)
+
+  fighterId String  @map("fighter_id")
+  fighter   Fighter @relation(fields: [fighterId], references: [id], onDelete: Cascade)
+
+  result FightResult @map("result")
+
+  @@map("fight_participants")
+}
+
+model FightPrediction {
+  id String @id @default(cuid())
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  fightId String @map("fight_id")
+  fight   Fight  @relation(fields: [fightId], references: [id])
+
+  predictedWinnerId String  @map("predicted_winner_id")
+  predictedWinner   Fighter @relation(fields: [predictedWinnerId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, fightId])
+  @@map("fight_predictions")
+}

@@ -1,0 +1,222 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table users {
+  id String [pk]
+  username String [unique, not null]
+  email String [unique, not null]
+  password String [not null]
+  role UserRole [not null, default: 'USER']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  favorites fight_favorites [not null]
+  predictions fight_predictions [not null]
+}
+
+Table fighters {
+  id String [pk]
+  name String [unique, not null]
+  nickname String
+  description String
+  imageUrl String [not null]
+  countryCode String [not null]
+  height Float
+  reach Float
+  weight Float
+  stance String
+  status FighterStatus [not null, default: 'ACTIVE']
+  ufcDetails ufc_fighters
+  rizinDetails rizin_fighters
+  oneDetails one_fighters
+  fightsAsFighter fights [not null]
+  fightsAsOpponent fights [not null]
+  fightParticipations fight_participants [not null]
+  predictions fight_predictions [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table ufc_fighters {
+  id String [pk]
+  isP4P Boolean [not null, default: false]
+  titleWins Int [not null, default: 0]
+  titleLosses Int [not null, default: 0]
+  fighterId String [unique, not null]
+  fighter fighters [not null]
+}
+
+Table rizin_fighters {
+  id String [pk]
+  gym String
+  city String
+  debutYear Int
+  fighterId String [unique, not null]
+  fighter fighters [not null]
+}
+
+Table one_fighters {
+  id String [pk]
+  gym String
+  birthLat Float
+  birthLong Float
+  fightingStyle String
+  fighterId String [unique, not null]
+  fighter fighters [not null]
+}
+
+Table events {
+  id String [pk]
+  name String [unique, not null]
+  date DateTime [not null]
+  promotion EventType [not null]
+  latitude Float
+  longitude Float
+  imageUrl String [not null]
+  fights fights [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table fights {
+  id String [pk]
+  fightType FightType [not null]
+  rounds Int [not null]
+  championshipFight Boolean [not null, default: false]
+  fighter1Id String [not null]
+  fighter1 fighters [not null]
+  fighter2Id String [not null]
+  fighter2 fighters [not null]
+  winnerId String
+  method FightMethod [not null]
+  finishRound Int
+  finishTimeSeconds Int
+  eventId String
+  event events
+  statistics fight_statistics
+  participants fight_participants [not null]
+  favorites fight_favorites [not null]
+  predictions fight_predictions [not null]
+}
+
+Table fight_statistics {
+  id String [pk]
+  totalStrikes1 Int [not null]
+  totalStrikes2 Int [not null]
+  sigStrikes1 Int [not null]
+  sigStrikes2 Int [not null]
+  takedowns1 Int [not null]
+  takedowns2 Int [not null]
+  submissionAttempts1 Int [not null]
+  submissionAttempts2 Int [not null]
+  knockdowns1 Int [not null]
+  knockdowns2 Int [not null]
+  reversals1 Int [not null]
+  reversals2 Int [not null]
+  fightId String [unique, not null]
+  fight fights [not null]
+}
+
+Table fight_participants {
+  id String [pk]
+  fightId String [not null]
+  fight fights [not null]
+  fighterId String [not null]
+  fighter fighters [not null]
+  result FightResult [not null]
+}
+
+Table fight_favorites {
+  id String [pk]
+  userId String [not null]
+  user users [not null]
+  fightId String [not null]
+  fight fights [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (userId, fightId) [unique]
+  }
+}
+
+Table fight_predictions {
+  id String [pk]
+  userId String [not null]
+  user users [not null]
+  fightId String [not null]
+  fight fights [not null]
+  predictedWinnerId String [not null]
+  predictedWinner fighters [not null]
+  createdAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (userId, fightId) [unique]
+  }
+}
+
+Enum UserRole {
+  ADMIN
+  USER
+}
+
+Enum FighterStatus {
+  ACTIVE
+  RETIRED
+  INACTIVE
+  CHAMPION
+}
+
+Enum FightResult {
+  WIN
+  LOSS
+  DRAW
+  NO_CONTEST
+}
+
+Enum FightMethod {
+  KO_TKO
+  SUBMISSION
+  DECISION
+}
+
+Enum EventType {
+  UFC
+  RIZIN
+  ONE
+}
+
+Enum FightType {
+  MAIN_EVENT
+  CO_MAIN_EVENT
+  FEATURED_FIGHT
+  PRELIMS
+  EARLY_PRELIMS
+}
+
+Ref: ufc_fighters.fighterId - fighters.id
+
+Ref: rizin_fighters.fighterId - fighters.id
+
+Ref: one_fighters.fighterId - fighters.id
+
+Ref: fights.fighter1Id > fighters.id
+
+Ref: fights.fighter2Id > fighters.id
+
+Ref: fights.eventId > events.id
+
+Ref: fight_statistics.fightId - fights.id
+
+Ref: fight_participants.fightId > fights.id
+
+Ref: fight_participants.fighterId > fighters.id
+
+Ref: fight_favorites.userId > users.id
+
+Ref: fight_favorites.fightId > fights.id
+
+Ref: fight_predictions.userId > users.id
+
+Ref: fight_predictions.fightId > fights.id
+
+Ref: fight_predictions.predictedWinnerId > fighters.id
