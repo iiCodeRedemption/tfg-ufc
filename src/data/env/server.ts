@@ -4,6 +4,7 @@ import { createEnv } from "@t3-oss/env-nextjs"
 export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url().min(1),
+    DIRECT_DATABASE_URL: z.string().url().min(1),
     SUPABASE_URL: z.string().url().min(1),
     SUPABASE_KEY: z.string().min(1),
     SMTP_HOST: z.string().min(1),
