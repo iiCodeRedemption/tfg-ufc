@@ -24,7 +24,7 @@ export default async function EditEventPage({
     name: event.name,
     date: formattedDate,
     time: formattedTime,
-    location: event.name.split(":")[0],
+    location: event.location ?? "",
     description: event.description ?? "",
     type: event.promotion,
     imageUrl: event.imageUrl,

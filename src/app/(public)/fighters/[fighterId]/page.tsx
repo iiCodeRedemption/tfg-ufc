@@ -124,6 +124,49 @@ async function FighterInfo({ fighterId }: { fighterId: string }) {
             <StatCard title="Description" value={fighter.description} />
           )}
         </div>
+        {fighter.ufcDetails && (
+          <div className="space-y-4">
+            <StatCard
+              title="P4P"
+              value={fighter.ufcDetails.isP4P ? "Yes" : "No"}
+            />
+            <StatCard
+              title="Title wins"
+              value={fighter.ufcDetails.titleWins || "-"}
+            />
+            <StatCard
+              title="Title losses"
+              value={fighter.ufcDetails.titleLosses || "-"}
+            />
+          </div>
+        )}
+        {fighter.rizinDetails && (
+          <div className="space-y-4">
+            <StatCard title="Gym" value={fighter.rizinDetails.gym || "-"} />
+            <StatCard title="City" value={fighter.rizinDetails.city || "-"} />
+            <StatCard
+              title="Debut year"
+              value={fighter.rizinDetails.debutYear || "-"}
+            />
+          </div>
+        )}
+        {fighter.oneDetails && (
+          <div className="space-y-4">
+            <StatCard
+              title="Birth latitude"
+              value={fighter.oneDetails.birthLat || "-"}
+            />
+            <StatCard
+              title="Birth longitude"
+              value={fighter.oneDetails.birthLong || "-"}
+            />
+            <StatCard title="Gym" value={fighter.oneDetails.gym || "-"} />
+            <StatCard
+              title="Style"
+              value={fighter.oneDetails.fightingStyle || "-"}
+            />
+          </div>
+        )}
       </div>
     </div>
   )
