@@ -830,17 +830,22 @@ function LastFightCard({
   }
 
   const hasStats =
-    stats &&
-    ((stats.totalStrikes && stats.totalStrikes > 0) ||
-      (stats.sigStrikes && stats.sigStrikes > 0) ||
-      (stats.takedowns && stats.takedowns > 0) ||
-      (stats.knockdowns && stats.knockdowns > 0))
+    (stats &&
+      ((stats.totalStrikes && stats.totalStrikes > 0) ||
+        (stats.sigStrikes && stats.sigStrikes > 0) ||
+        (stats.takedowns && stats.takedowns > 0) ||
+        (stats.knockdowns && stats.knockdowns > 0))) ||
+    (stats?.reversals && stats.reversals > 0) ||
+    (stats?.submissionAttempts && stats.submissionAttempts > 0)
 
   const fightStats = {
     totalStrikes: hasStats && stats?.totalStrikes ? stats.totalStrikes : "N/A",
     sigStrikes: hasStats && stats?.sigStrikes ? stats.sigStrikes : "N/A",
     takedowns: hasStats && stats?.takedowns ? stats.takedowns : "N/A",
     knockdowns: hasStats && stats?.knockdowns ? stats.knockdowns : "N/A",
+    submissionAttempts:
+      hasStats && stats?.submissionAttempts ? stats.submissionAttempts : "N/A",
+    reversals: hasStats && stats?.reversals ? stats.reversals : "N/A",
   }
 
   return (
@@ -901,6 +906,16 @@ function LastFightCard({
             <Shield className="w-3 h-3 text-red-400" />
             <span>Knockdowns:</span>
             <span className="font-bold">{fightStats.knockdowns}</span>
+          </div>
+          <div className="flex items-center gap-1 text-gray-300">
+            <Locate className="w-3 h-3 text-yellow-400" />
+            <span>Submission Attempts:</span>
+            <span className="font-bold">{fightStats.submissionAttempts}</span>
+          </div>
+          <div className="flex items-center gap-1 text-gray-300">
+            <Activity className="w-3 h-3 text-green-400" />
+            <span>Reversals:</span>
+            <span className="font-bold">{fightStats.reversals}</span>
           </div>
         </div>
 
