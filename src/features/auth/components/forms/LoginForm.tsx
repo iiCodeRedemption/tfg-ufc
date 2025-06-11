@@ -20,11 +20,13 @@ import { login } from "@/features/auth/server/login"
 import { googleLogin } from "@/features/auth/server/googleLogin"
 import { toast } from "sonner"
 import { LoadingSwap } from "@/components/LoadingSwap"
+import { useRouter } from "next/navigation"
 
 export function LoginForm({ redirectTo }: { redirectTo?: string }) {
   const [showPassword, setShowPassword] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [isGooglePending, startGoogleTransition] = useTransition()
+  const router = useRouter()
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -51,15 +53,16 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
     startGoogleTransition(async () => {
       const result = await googleLogin({ redirectTo })
 
-      if (result?.error) {
+      if (result.error || result.url == null) {
         toast.error("Google Login Failed", {
           description: result.message,
           position: "top-center",
           duration: 4000,
         })
-      } else if (result?.url) {
-        window.location.href = result.url
+        return
       }
+
+      router.push(result.url)
     })
   }
 

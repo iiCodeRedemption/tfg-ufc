@@ -67,9 +67,9 @@ export function RegisterForm({ redirectTo }: { redirectTo?: string } = {}) {
 
   function handleGoogleRegister() {
     startGoogleTransition(async () => {
-      const result = await googleLogin()
+      const result = await googleLogin({ redirectTo })
 
-      if (result?.error) {
+      if (result.error || result.url == null) {
         toast.error("Google Registration Failed", {
           description: result.message,
           position: "top-center",
@@ -78,7 +78,7 @@ export function RegisterForm({ redirectTo }: { redirectTo?: string } = {}) {
         return
       }
 
-      router.push(redirectTo ?? "/")
+      router.push(result.url)
     })
   }
 
