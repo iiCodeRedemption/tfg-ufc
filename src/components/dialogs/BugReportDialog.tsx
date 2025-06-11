@@ -38,6 +38,7 @@ export function BugReportDialog({ trigger }: { trigger: React.ReactNode }) {
     resolver: zodResolver(bugReportSchema),
     defaultValues: {
       name: "",
+      email: "",
       description: "",
       consentToShareInfo: false,
     },
@@ -94,6 +95,24 @@ export function BugReportDialog({ trigger }: { trigger: React.ReactNode }) {
 
               <FormField
                 control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-200">Your email</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-[#1a1a1a] border-[#333] text-white focus-visible:ring-[#d20a0a]"
+                        placeholder="Enter your email"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-[#ff4d4d]" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="description"
                 render={({ field }) => (
                   <FormItem>
@@ -125,8 +144,8 @@ export function BugReportDialog({ trigger }: { trigger: React.ReactNode }) {
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel className="text-gray-200">
-                        I consent to share my name and email address for follow-up
-                        communications about this bug report.
+                        I consent to share my name and email address for
+                        follow-up communications about this bug report.
                       </FormLabel>
                     </div>
                   </FormItem>
