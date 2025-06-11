@@ -71,7 +71,6 @@ type Fighter = Partial<PrismaFighter> & {
   } | null
   oneDetails?: {
     id: string
-    gym: string | null
     birthLat: number | null
     birthLong: number | null
     fightingStyle: string | null
