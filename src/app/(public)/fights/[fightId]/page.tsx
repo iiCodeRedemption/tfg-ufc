@@ -195,7 +195,7 @@ function FightHeader({
                   >
                     <EventDetail
                       icon={<MapPin className="w-5 h-5 mr-2" />}
-                      text={event.name}
+                      text={event.location}
                     />
                   </Link>
                 )}
