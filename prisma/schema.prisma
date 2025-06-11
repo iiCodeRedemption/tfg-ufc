@@ -158,14 +158,12 @@ model Event {
   id String @id @default(cuid())
 
   name        String    @unique
+  location    String?
   description String?
   date        DateTime
   isPPV       Boolean   @default(false) @map("is_ppv")
   price       Int?      @map("price") // in cents
   promotion   EventType
-
-  latitude  Float?
-  longitude Float?
 
   imageUrl String @map("image_url")
 

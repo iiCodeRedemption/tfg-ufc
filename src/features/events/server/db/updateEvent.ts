@@ -12,8 +12,6 @@ type UpdateEventParams = {
   imageUrl?: string
   isPPV: boolean
   price?: number
-  latitude?: number
-  longitude?: number
 }
 
 export async function updateEvent(params: UpdateEventParams) {
@@ -26,8 +24,7 @@ export async function updateEvent(params: UpdateEventParams) {
       name: params.name,
       date: eventDate,
       promotion: params.type,
-      latitude: params.latitude,
-      longitude: params.longitude,
+      location: params.location,
       description: params.description,
       isPPV: params.isPPV,
       price: params.isPPV ? params.price : null,

@@ -11,8 +11,6 @@ type CreateEventParams = {
   imageUrl: string
   isPPV: boolean
   price?: number
-  latitude?: number
-  longitude?: number
 }
 
 export async function createEvent(params: CreateEventParams) {
@@ -25,11 +23,10 @@ export async function createEvent(params: CreateEventParams) {
       data: {
         name: params.name,
         date: eventDate,
+        location: params.location,
         description: params.description,
         promotion: params.type,
         imageUrl: params.imageUrl,
-        latitude: params.latitude,
-        longitude: params.longitude,
         isPPV: params.isPPV,
         price: params.price,
       },

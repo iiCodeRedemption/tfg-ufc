@@ -189,7 +189,7 @@ function FightHeader({
                   icon={<Clock className="w-5 h-5 mr-2" />}
                   text={formatTime(event.date)}
                 />
-                {event.latitude != null && event.longitude != null && (
+                {event.location && (
                   <Link
                     href={`/events/${event.id}`}
                     className="hover:underline"

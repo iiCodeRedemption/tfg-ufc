@@ -1,7 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
-import { Suspense } from "react"
 import { AdminHeader } from "@/features/admin/components/AdminHeader"
 import { FightersAdminPanel } from "@/features/admin/components/fighters/FightersAdminPanel"
 import { EventsAdminPanel } from "@/features/admin/components/events/EventsAdminPanel"
@@ -55,9 +54,7 @@ export default async function AdminPage({
             </TabsContent>
 
             <TabsContent value="fights" className="mt-0">
-              <Suspense fallback={<div>Loading...</div>}>
-                <FightsAdminPanel />
-              </Suspense>
+              <FightsAdminPanel />
             </TabsContent>
           </Tabs>
         </CardContent>

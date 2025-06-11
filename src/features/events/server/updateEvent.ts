@@ -73,9 +73,6 @@ export async function updateEvent(eventId: string, data: EventFormData) {
       imageUrl = urlData.publicUrl
     }
 
-    const latitude = existingEvent.latitude || 0
-    const longitude = existingEvent.longitude || 0
-
     const dbResult = await updateEventDb({
       id: eventId,
       name: data.name,
@@ -90,8 +87,6 @@ export async function updateEvent(eventId: string, data: EventFormData) {
         data.price != null && data.price !== existingEvent.price
           ? convertDollarsToCents(data.price)
           : (existingEvent.price ?? undefined),
-      latitude,
-      longitude,
     })
 
     if (dbResult.error || dbResult.event == null) {

@@ -92,9 +92,9 @@ async function EventHeader({ eventId }: { eventId: string }) {
                   </div>
                 </div>
 
-                {event.latitude != null && event.longitude != null && (
+                {event.location != null && (
                   <Link
-                    href={`https://maps.google.com/?q=${event.latitude},${event.longitude}`}
+                    href={`https://maps.google.com/?q=${event.location}`}
                     target="_blank"
                     className="hover:underline"
                   >
@@ -102,9 +102,7 @@ async function EventHeader({ eventId }: { eventId: string }) {
                       <MapPin className="h-6 w-6 mr-3 text-red-500" />
                       <div>
                         <p className="text-sm text-gray-400">Location</p>
-                        <p className="font-semibold">
-                          {event.latitude}, {event.longitude}
-                        </p>
+                        <p className="font-semibold">{event.location}</p>
                       </div>
                     </div>
                   </Link>

@@ -43,9 +43,6 @@ export async function createEvent(data: EventFormData) {
       imageUrl = uploadResult.imageUrl || ""
     }
 
-    const latitude = 0
-    const longitude = 0
-
     const dbResult = await createEventDb({
       name: data.name,
       date: data.date,
@@ -56,8 +53,6 @@ export async function createEvent(data: EventFormData) {
       imageUrl,
       isPPV: data.isPPV,
       price: data.price != null ? convertDollarsToCents(data.price) : undefined,
-      latitude,
-      longitude,
     })
 
     if (dbResult.error || dbResult.event == null) {
