@@ -155,7 +155,6 @@ export async function updateFighter(params: UpdateFighterParams) {
           await tx.oNEFighter.create({
             data: {
               fighterId: fighter.id,
-              gym: params.gym,
               birthLat: params.birthLat,
               birthLong: params.birthLong,
               fightingStyle: params.fightingStyle,
