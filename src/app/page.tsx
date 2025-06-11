@@ -1,6 +1,5 @@
 import { FighterList } from "@/features/fighters/components/FighterList"
 import { EventList } from "@/features/events/components/EventList"
-import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
@@ -125,12 +124,7 @@ async function UpcomingEventsSection() {
         </Button>
       </div>
 
-      <Card className="bg-gradient-to-br from-gray-900 to-black border-0 overflow-hidden">
-        <div className="h-1.5 bg-gradient-to-r from-red-600 to-red-800"></div>
-        <CardContent className="p-8">
-          <EventList />
-        </CardContent>
-      </Card>
+      <EventList />
     </section>
   )
 }
