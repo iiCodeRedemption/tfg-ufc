@@ -535,6 +535,14 @@ function FightStats({ statistics }: { statistics: FightStatistics | null }) {
             hasStats={true}
           />
         )}
+        {hasStats && statistics?.reversals1 !== undefined && (
+          <ComparisonRow
+            label="Reversals"
+            value1={statistics.reversals1}
+            value2={statistics.reversals2}
+            hasStats={true}
+          />
+        )}
       </CardContent>
     </Card>
   )
