@@ -46,6 +46,7 @@ export function FighterCard({ fighter }: { fighter: FighterWithDetails }) {
             countryCode={fighter.countryCode}
             svg
             className="rounded-sm h-5"
+            alt={`${fighter.name} is from ${fighter.countryCode}`}
           />
           <h2 className="text-xl font-bold text-white tracking-wide">
             {fighter.name}
@@ -72,8 +73,8 @@ export function FighterCard({ fighter }: { fighter: FighterWithDetails }) {
                 fighter.status === FighterStatus.CHAMPION
                   ? "bg-gradient-to-r from-yellow-500 to-yellow-700 text-black"
                   : fighter.status === FighterStatus.ACTIVE
-                  ? "bg-gradient-to-r from-green-600 to-green-800 text-white"
-                  : "bg-gradient-to-r from-gray-600 to-gray-800 text-white"
+                    ? "bg-gradient-to-r from-green-600 to-green-800 text-white"
+                    : "bg-gradient-to-r from-gray-600 to-gray-800 text-white"
               } 
               border-0 font-medium shadow-md px-2 py-0.5
             `}
