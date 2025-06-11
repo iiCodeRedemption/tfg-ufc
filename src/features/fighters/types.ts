@@ -7,7 +7,7 @@ import { detectFighterType } from "./utils/detectFighterType"
 export type FighterFormData = z.infer<typeof fighterSchema>
 
 export function extractFighterFormData(
-  fighter?: FighterWithDetails
+  fighter?: FighterWithDetails,
 ): FighterFormData {
   if (fighter == null) {
     return {
@@ -50,7 +50,7 @@ export function extractFighterFormData(
     isP4P: fighter.ufcDetails?.isP4P || false,
     titleWins: fighter.ufcDetails?.titleWins || 0,
     titleLosses: fighter.ufcDetails?.titleLosses || 0,
-    gym: fighter.rizinDetails?.gym || fighter.oneDetails?.gym || "",
+    gym: fighter.rizinDetails?.gym || "",
     city: fighter.rizinDetails?.city || "",
     debutYear: fighter.rizinDetails?.debutYear || undefined,
     birthLat: fighter.oneDetails?.birthLat || undefined,
