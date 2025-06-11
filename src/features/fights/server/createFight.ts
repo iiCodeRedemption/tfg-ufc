@@ -4,8 +4,18 @@ import { createFight as createFightDb } from "@/features/fights/server/db/create
 import { revalidateTag, revalidatePath } from "next/cache"
 import { CACHE_TAGS } from "@/data/constants/cache"
 import { FightFormData } from "@/features/fights/types"
+import { getCurrentUser } from "@/features/auth/server/getCurrentUser"
+import { canAccessAdmin } from "@/features/auth/server/permissions/canAccessAdmin"
 
 export async function createFight(data: FightFormData) {
+  const user = await getCurrentUser({ fullUser: true })
+  if (user == null || !canAccessAdmin(user)) {
+    return {
+      error: true,
+      message: "You do not have permission to create an event",
+    }
+  }
+
   try {
     if (data.fighter1Id === data.fighter2Id) {
       return { error: true, message: "Fighter cannot fight against themselves" }
@@ -36,10 +46,10 @@ export async function createFight(data: FightFormData) {
     revalidateTag(`${CACHE_TAGS.fighter}:${data.fighter2Id}`)
 
     revalidateTag(
-      `${CACHE_TAGS.fighter}:${data.fighter1Id}:${CACHE_TAGS.participations}`
+      `${CACHE_TAGS.fighter}:${data.fighter1Id}:${CACHE_TAGS.participations}`,
     )
     revalidateTag(
-      `${CACHE_TAGS.fighter}:${data.fighter2Id}:${CACHE_TAGS.participations}`
+      `${CACHE_TAGS.fighter}:${data.fighter2Id}:${CACHE_TAGS.participations}`,
     )
 
     if (data.eventId != null) {

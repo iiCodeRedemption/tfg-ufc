@@ -1,0 +1,1 @@
+export const MAX_UPLOAD_FILE_SIZE = 1048576

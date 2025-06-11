@@ -5,6 +5,8 @@ import { revalidateTag, revalidatePath } from "next/cache"
 import { CACHE_TAGS } from "@/data/constants/cache"
 import { statisticsSchema } from "@/features/fights/schemas/fightStatisticsSchema"
 import { z } from "zod"
+import { getCurrentUser } from "@/features/auth/server/getCurrentUser"
+import { canAccessAdmin } from "@/features/auth/server/permissions/canAccessAdmin"
 
 export async function updateFightStatistics({
   fightId,
@@ -13,6 +15,14 @@ export async function updateFightStatistics({
   fightId: string
   data: z.infer<typeof statisticsSchema>
 }) {
+  const user = await getCurrentUser({ fullUser: true })
+  if (user == null || !canAccessAdmin(user)) {
+    return {
+      error: true,
+      message: "You do not have permission to create an event",
+    }
+  }
+
   try {
     const existingStats = await db.fightStatistics.findUnique({
       where: { fightId: fightId },
@@ -112,7 +122,7 @@ export async function updateFightStatistics({
       previousFights.forEach((fight) => {
         revalidateTag(`${CACHE_TAGS.fight}:${fight.id}`)
         revalidateTag(
-          `${CACHE_TAGS.fight}:${fight.id}:${CACHE_TAGS.participations}`
+          `${CACHE_TAGS.fight}:${fight.id}:${CACHE_TAGS.participations}`,
         )
       })
     }

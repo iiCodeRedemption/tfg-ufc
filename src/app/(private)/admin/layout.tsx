@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { notFound, redirect } from "next/navigation"
+import { redirect } from "next/navigation"
 import { ReactNode } from "react"
 import { getCurrentUser } from "@/features/auth/server/getCurrentUser"
 import { canAccessAdmin } from "@/features/auth/server/permissions/canAccessAdmin"
@@ -21,7 +21,7 @@ export default async function AdminLayout({
   const user = await getCurrentUser({ fullUser: true })
 
   if (user == null) return redirect("/login")
-  if (!canAccessAdmin(user)) return notFound()
+  if (!canAccessAdmin(user)) return redirect("/login")
 
   return <>{children}</>
 }

@@ -8,8 +8,20 @@ import { deleteImageFromStorage } from "@/lib/supabase/deleteImage"
 import { EventFormData } from "@/features/events/types"
 import { convertDollarsToCents } from "@/lib/math"
 import { getEventById } from "@/features/events/server/db/getEventById"
+import { getCurrentUser } from "@/features/auth/server/getCurrentUser"
+import { canAccessAdmin } from "@/features/auth/server/permissions/canAccessAdmin"
+import { MAX_UPLOAD_FILE_SIZE } from "@/lib/supabase/data/constants/storage"
+import { formatFileSize } from "@/lib/formatters"
 
 export async function updateEvent(eventId: string, data: EventFormData) {
+  const user = await getCurrentUser({ fullUser: true })
+  if (user == null || !canAccessAdmin(user)) {
+    return {
+      error: true,
+      message: "You do not have permission to create an event",
+    }
+  }
+
   try {
     let imageUrl: string | undefined = undefined
 
@@ -18,7 +30,7 @@ export async function updateEvent(eventId: string, data: EventFormData) {
       return { error: true, message: "Event not found" }
     }
 
-    if (data.image && typeof data.image !== "string") {
+    if (data.image != null && typeof data.image !== "string") {
       const supabase = await createClient()
 
       if (existingEvent.imageUrl != null) {
@@ -29,6 +41,13 @@ export async function updateEvent(eventId: string, data: EventFormData) {
         if (deleteResult.error) {
           console.error("Error removing old image:", deleteResult.message)
           return { error: true, message: "Failed to remove old image" }
+        }
+      }
+
+      if (data.image.size > MAX_UPLOAD_FILE_SIZE) {
+        return {
+          error: true,
+          message: `Image size must be less than ${formatFileSize(MAX_UPLOAD_FILE_SIZE)}`,
         }
       }
 
@@ -70,7 +89,7 @@ export async function updateEvent(eventId: string, data: EventFormData) {
       price:
         data.price != null && data.price !== existingEvent.price
           ? convertDollarsToCents(data.price)
-          : existingEvent.price ?? undefined,
+          : (existingEvent.price ?? undefined),
       latitude,
       longitude,
     })

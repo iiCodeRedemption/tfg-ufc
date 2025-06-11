@@ -56,6 +56,8 @@ import {
   PROMOTIONS,
   PROMOTION_NAMES,
 } from "@/features/fighters/data/constants/promotions"
+import { MAX_UPLOAD_FILE_SIZE } from "@/lib/supabase/data/constants/storage"
+import { formatFileSize } from "@/lib/formatters"
 
 export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
   const router = useRouter()
@@ -64,8 +66,9 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
   const defaultValues = extractFighterFormData(fighter)
 
   const [imagePreview, setImagePreview] = useState<string | null>(
-    fighter?.imageUrl || null
+    fighter?.imageUrl || null,
   )
+  const [fileSizeError, setFileSizeError] = useState<string | null>(null)
 
   const form = useForm<FighterFormData>({
     resolver: zodResolver(fighterSchema),
@@ -81,15 +84,25 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
       const file = acceptedFiles[0]
-      if (file) {
-        const reader = new FileReader()
-        reader.onload = () => {
-          setImagePreview(reader.result as string)
-        }
+      if (file == null) return
 
-        reader.readAsDataURL(file)
-        form.setValue("image", file)
+      if (file.size > MAX_UPLOAD_FILE_SIZE) {
+        setFileSizeError(
+          `Image size exceeds ${formatFileSize(MAX_UPLOAD_FILE_SIZE)} limit. Please upload a smaller file.`,
+        )
+        setImagePreview(null)
+        form.setValue("image", null)
+        return
       }
+
+      setFileSizeError(null)
+      const reader = new FileReader()
+      reader.onload = () => {
+        setImagePreview(reader.result as string)
+      }
+
+      reader.readAsDataURL(file)
+      form.setValue("image", file)
     },
   })
 
@@ -105,7 +118,7 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
       }
 
       toast.success(
-        fighter ? "Fighter updated successfully" : "Fighter added successfully"
+        fighter ? "Fighter updated successfully" : "Fighter added successfully",
       )
       router.push("/admin?tab=fighters")
     })
@@ -121,8 +134,10 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
               "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors",
               isDragActive
                 ? "border-red-500 bg-red-500/10"
-                : "border-gray-700 hover:border-gray-600",
-              imagePreview ? "h-48" : "h-32"
+                : fileSizeError
+                  ? "border-red-500"
+                  : "border-gray-700 hover:border-gray-600",
+              imagePreview ? "h-48" : "h-32",
             )}
           >
             <input {...getInputProps()} />
@@ -151,10 +166,19 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-full">
-                <p className="text-gray-400 mb-2">
-                  Drag & drop fighter image here
-                </p>
-                <p className="text-sm text-gray-500">or click to select</p>
+                {fileSizeError ? (
+                  <p className="text-red-500 mb-2">{fileSizeError}</p>
+                ) : (
+                  <>
+                    <p className="text-gray-400 mb-2">
+                      Drag & drop event poster here
+                    </p>
+                    <p className="text-sm text-gray-500">or click to select</p>
+                    <p className="text-xs text-gray-500 mt-2">
+                      (Max file size: 1MB)
+                    </p>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -325,7 +349,7 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
                           role="combobox"
                           className={cn(
                             "w-full justify-between bg-[#1a1a1a] border-[#333] text-white focus:ring-[#d20a0a]",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value ? (
@@ -337,7 +361,7 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
                               />
                               <span>
                                 {COUNTRIES.find(
-                                  (country) => country.code === field.value
+                                  (country) => country.code === field.value,
                                 )?.name || field.value}
                               </span>
                             </div>
@@ -616,7 +640,7 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
                             field.onChange(
                               e.target.value
                                 ? parseInt(e.target.value)
-                                : undefined
+                                : undefined,
                             )
                           }
                         />
@@ -694,7 +718,7 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
                             field.onChange(
                               e.target.value
                                 ? parseFloat(e.target.value)
-                                : undefined
+                                : undefined,
                             )
                           }
                         />
@@ -727,7 +751,7 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
                             field.onChange(
                               e.target.value
                                 ? parseFloat(e.target.value)
-                                : undefined
+                                : undefined,
                             )
                           }
                         />

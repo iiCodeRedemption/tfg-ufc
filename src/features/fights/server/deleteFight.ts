@@ -3,8 +3,18 @@
 import { db } from "@/lib/db"
 import { revalidateTag, revalidatePath } from "next/cache"
 import { CACHE_TAGS } from "@/data/constants/cache"
+import { getCurrentUser } from "@/features/auth/server/getCurrentUser"
+import { canAccessAdmin } from "@/features/auth/server/permissions/canAccessAdmin"
 
 export async function deleteFight(fightId: string) {
+  const user = await getCurrentUser({ fullUser: true })
+  if (user == null || !canAccessAdmin(user)) {
+    return {
+      error: true,
+      message: "You do not have permission to create an event",
+    }
+  }
+
   try {
     const fightToDelete = await db.fight.findUnique({
       where: { id: fightId },
@@ -39,14 +49,14 @@ export async function deleteFight(fightId: string) {
     if (fightToDelete.fighter1Id != null) {
       revalidateTag(`${CACHE_TAGS.fighter}:${fightToDelete.fighter1Id}`)
       revalidateTag(
-        `${CACHE_TAGS.fighter}:${fightToDelete.fighter1Id}:participations`
+        `${CACHE_TAGS.fighter}:${fightToDelete.fighter1Id}:participations`,
       )
     }
 
     if (fightToDelete.fighter2Id != null) {
       revalidateTag(`${CACHE_TAGS.fighter}:${fightToDelete.fighter2Id}`)
       revalidateTag(
-        `${CACHE_TAGS.fighter}:${fightToDelete.fighter2Id}:participations`
+        `${CACHE_TAGS.fighter}:${fightToDelete.fighter2Id}:participations`,
       )
     }
 

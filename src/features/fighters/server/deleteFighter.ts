@@ -4,16 +4,26 @@ import { revalidateTag, revalidatePath } from "next/cache"
 import { CACHE_TAGS } from "@/data/constants/cache"
 import { deleteFighter as deleteFighterDb } from "@/features/fighters/server/db/deleteFighter"
 import { deleteImageFromStorage } from "@/lib/supabase/deleteImage"
+import { getCurrentUser } from "@/features/auth/server/getCurrentUser"
+import { canAccessAdmin } from "@/features/auth/server/permissions/canAccessAdmin"
 
 export async function deleteFighter(fighterId: string) {
+  const user = await getCurrentUser({ fullUser: true })
+  if (user == null || !canAccessAdmin(user)) {
+    return {
+      error: true,
+      message: "You do not have permission to create an event",
+    }
+  }
+
   try {
     const result = await deleteFighterDb(fighterId)
 
-    if (result.error || !result.fighter) {
+    if (result.error || result.fighter == null) {
       return { error: true, message: result.error }
     }
 
-    if (result.fighter.imageUrl) {
+    if (result.fighter.imageUrl != null) {
       const deleteResult = await deleteImageFromStorage({
         imageUrl: result.fighter.imageUrl,
         bucket: "fighters",
