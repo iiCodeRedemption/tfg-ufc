@@ -659,24 +659,6 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="gym"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-200">Gym</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Fighter's gym"
-                          className="bg-[#1a1a1a] border-[#333] text-white focus-visible:ring-[#d20a0a]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-[#ff4d4d]" />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
                   name="fightingStyle"
                   render={({ field }) => (
                     <FormItem>

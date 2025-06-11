@@ -128,7 +128,6 @@ model RIZINFighter {
 model ONEFighter {
   id String @id @default(cuid())
 
-  gym           String?
   birthLat      Float?  @map("birth_lat")
   birthLong     Float?  @map("birth_long")
   fightingStyle String? @map("fighting_style")
