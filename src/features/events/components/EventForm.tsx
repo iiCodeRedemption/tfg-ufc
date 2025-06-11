@@ -192,7 +192,7 @@ export function EventForm({
                     </p>
                     <p className="text-sm text-gray-500">or click to select</p>
                     <p className="text-xs text-gray-500 mt-2">
-                      (Max file size: 1MB)
+                      (Max file size: {formatFileSize(MAX_UPLOAD_FILE_SIZE)})
                     </p>
                   </>
                 )}

@@ -64,7 +64,7 @@ export async function EventsTable() {
                     </div>
                   </td>
                   <td className="p-4 align-middle text-gray-300">
-                    <span>{event.name.split(":")[0]}</span>
+                    <span>{event.location}</span>
                   </td>
                   <td className="p-4 align-middle">
                     <PromotionBadge promotion={event.promotion} />
