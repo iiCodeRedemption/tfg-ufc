@@ -156,7 +156,6 @@ async function FighterInfo({ fighterId }: { fighterId: string }) {
               title="Birth longitude"
               value={fighter.oneDetails.birthLong || "-"}
             />
-            <StatCard title="Gym" value={fighter.oneDetails.gym || "-"} />
             <StatCard
               title="Style"
               value={fighter.oneDetails.fightingStyle || "-"}
