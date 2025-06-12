@@ -2,7 +2,17 @@
 
 import { Button } from "@/components/ui/button"
 import { AlertTriangle, RefreshCw, Home, ArrowLeft } from "lucide-react"
+import { Metadata } from "next"
 import Link from "next/link"
+
+export const metadata: Metadata = {
+  title: "500 - Internal Server Error",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
+}
 
 export default function ErrorPage({
   error,
