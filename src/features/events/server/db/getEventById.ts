@@ -4,7 +4,7 @@ import { CACHE_TAGS } from "@/data/constants/cache"
 
 export async function getEventById(eventId: string) {
   "use cache"
-  cacheTag(CACHE_TAGS.event)
+  cacheTag(`${CACHE_TAGS.event}:${eventId}`)
 
   return await db.event.findUnique({
     where: { id: eventId },
