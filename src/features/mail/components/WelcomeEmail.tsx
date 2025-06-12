@@ -86,7 +86,7 @@ export function WelcomeEmail({ email }: { email: string }) {
                 © {YEAR} {APP_NAME}. All rights reserved.
               </Text>
               <Text className="text-gray-400 text-xs text-center">
-                This email was sent to {email} because you signed up for
+                This email was sent to {email} because you signed up for{" "}
                 {APP_NAME}.
               </Text>
             </Section>
