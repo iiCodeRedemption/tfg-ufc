@@ -61,7 +61,7 @@ export function RegisterForm({ redirectTo }: { redirectTo?: string } = {}) {
         duration: 4000,
       })
 
-      router.push(redirectTo ?? "/")
+      router.push(redirectTo || "/")
     })
   }
 

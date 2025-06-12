@@ -23,9 +23,9 @@ export async function login(
   })
 
   if (error) {
-    return { error: true, message: error.message ?? "An error ocurred" }
+    return { error: true, message: error.message || "An error ocurred" }
   }
 
   revalidatePath("/", "layout")
-  redirect(redirectTo ?? "/")
+  redirect(redirectTo || "/")
 }

@@ -9,8 +9,8 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
 
   const code = searchParams.get("code")
-  const next = searchParams.get("next") ?? "/"
-  const redirectTo = searchParams.get("redirectTo") ?? next
+  const next = searchParams.get("next") || "/"
+  const redirectTo = searchParams.get("redirectTo") || next
 
   if (code == null) {
     return NextResponse.json({ error: "No code found" }, { status: 400 })

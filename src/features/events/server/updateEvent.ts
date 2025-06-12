@@ -86,7 +86,7 @@ export async function updateEvent(eventId: string, data: EventFormData) {
       price:
         data.price != null && data.price !== existingEvent.price
           ? convertDollarsToCents(data.price)
-          : (existingEvent.price ?? undefined),
+          : existingEvent.price || undefined,
     })
 
     if (dbResult.error || dbResult.event == null) {

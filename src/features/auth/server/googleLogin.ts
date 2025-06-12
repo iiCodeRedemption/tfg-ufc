@@ -11,7 +11,7 @@ export async function googleLogin({
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/callback?redirectTo=${redirectTo ?? "/"}`,
+      redirectTo: `${env.NEXT_PUBLIC_SITE_URL}/auth/callback?redirectTo=${redirectTo || "/"}`,
       queryParams: {
         access_type: "offline",
         prompt: "consent",
@@ -20,7 +20,7 @@ export async function googleLogin({
   })
 
   if (error) {
-    return { error: true, message: error.message ?? "An error occurred" }
+    return { error: true, message: error.message || "An error occurred" }
   }
 
   return { error: false, url: data.url }

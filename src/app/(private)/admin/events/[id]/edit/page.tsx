@@ -24,12 +24,12 @@ export default async function EditEventPage({
     name: event.name,
     date: formattedDate,
     time: formattedTime,
-    location: event.location ?? "",
-    description: event.description ?? "",
+    location: event.location || "",
+    description: event.description || "",
     type: event.promotion,
     imageUrl: event.imageUrl,
     isPPV: event.isPPV,
-    price: event.price ?? undefined,
+    price: event.price || undefined,
   }
 
   return (

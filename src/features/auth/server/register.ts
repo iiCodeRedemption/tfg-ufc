@@ -30,7 +30,7 @@ export async function register(unsafeData: RegisterSchema) {
   })
 
   if (error) {
-    return { error: true, message: error.message ?? "An error occurred" }
+    return { error: true, message: error.message || "An error occurred" }
   }
 
   if (user == null || user.email == null) {

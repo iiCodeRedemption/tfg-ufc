@@ -329,7 +329,7 @@ export function FightDialog({
                   <div className="flex items-center space-x-2">
                     <Switch
                       id="has-winner"
-                      checked={hasWinner ?? false}
+                      checked={hasWinner || false}
                       onCheckedChange={setHasWinner}
                     />
                     <Label htmlFor="has-winner" className="text-gray-200">

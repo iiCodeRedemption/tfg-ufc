@@ -152,7 +152,7 @@ async function VenueInfo({ eventId }: { eventId: string }) {
               </h3>
               <div className="h-1 w-16 bg-gradient-to-r from-red-500 to-red-700 rounded-full mb-4" />
               <p className="text-gray-300 leading-relaxed">
-                {event.description ?? "No description available"}
+                {event.description || "No description available"}
               </p>
             </div>
           </div>

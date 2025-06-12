@@ -22,6 +22,9 @@ export function FightCardTabs({ event }: { event: EventWithFights }) {
   const mainCardFights = event.fights.filter(
     (fight) => fight.fightType === FightType.MAIN_EVENT,
   )
+  const coMainCardFights = event.fights.filter(
+    (fight) => fight.fightType === FightType.CO_MAIN_EVENT,
+  )
   const prelimCardFights = event.fights.filter(
     (fight) => fight.fightType === FightType.PRELIMS,
   )
@@ -43,6 +46,16 @@ export function FightCardTabs({ event }: { event: EventWithFights }) {
               onClick={() => setActiveCard("main")}
             >
               MAIN CARD
+            </button>
+            <button
+              className={`py-4 px-6 font-bold transition-all ${
+                activeCard === "co-main"
+                  ? "text-red-500 border-b-2 border-red-500"
+                  : "text-gray-400 hover:text-white hover:bg-red-950/20"
+              }`}
+              onClick={() => setActiveCard("co-main")}
+            >
+              CO-MAIN EVENT
             </button>
             <button
               className={`py-4 px-6 font-bold transition-all ${
@@ -75,17 +88,19 @@ export function FightCardTabs({ event }: { event: EventWithFights }) {
             <h2 className="text-2xl font-bold">
               {activeCard === "main"
                 ? "MAIN CARD"
+                : activeCard === "co-main"
+                ? "CO-MAIN EVENT"
                 : activeCard === "prelim"
                   ? "PRELIMINARY CARD"
                   : "EARLY PRELIMS"}
             </h2>
-            {activeCard === "main" && (
+            {(activeCard === "main" || activeCard === "co-main") && (
               <div className="ml-4 bg-red-950/40 px-3 py-1 rounded-full text-sm border border-red-950/30">
                 {formatTime(event.date)}
               </div>
             )}
             <div className="ml-4 bg-red-950/40 px-3 py-1 rounded-full text-sm border border-red-950/30">
-              {activeCard === "main"
+              {activeCard === "main" || activeCard === "co-main"
                 ? "PPV"
                 : activeCard === "prelim"
                   ? "ESPN"
@@ -101,6 +116,19 @@ export function FightCardTabs({ event }: { event: EventWithFights }) {
                 </div>
               ) : (
                 mainCardFights.map((fight) => (
+                  <FightCard key={fight.id} fight={fight} />
+                ))
+              )}
+            </div>
+          )}
+          {activeCard === "co-main" && (
+            <div className="space-y-6">
+              {coMainCardFights.length === 0 ? (
+                <div className="text-center text-gray-400 italic py-8">
+                  No fights scheduled for the Co-Main Event.
+                </div>
+              ) : (
+                coMainCardFights.map((fight) => (
                   <FightCard key={fight.id} fight={fight} />
                 ))
               )}
