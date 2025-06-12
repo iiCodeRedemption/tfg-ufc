@@ -46,6 +46,15 @@ export const RIGHT_NAV_LINKS: NavLinks = [
       href: link.href.replace("/fighters", "/events"),
     })),
   },
+  {
+    title: "FIGHTS",
+    subLinks: [
+      {
+        title: "All Fights",
+        href: "/fights",
+      },
+    ],
+  },
 ]
 
 export const NAV_LINKS: NavLinks = [...LEFT_NAV_LINKS, ...RIGHT_NAV_LINKS]

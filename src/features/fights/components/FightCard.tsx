@@ -1,5 +1,3 @@
-"use client"
-
 import Image from "next/image"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -26,32 +24,32 @@ export function FightCard({ fight }: { fight: FightWithParticipants }) {
             src={fight.fighter2.imageUrl || "/imgs/logo.webp"}
             alt={fight.fighter2.name}
             fill
-            className="object-cover object-left"
+            className="object-cover object-left scale-x-[-1] transform"
           />
           <div className="absolute inset-0 bg-gradient-to-l from-black via-black/50 to-transparent"></div>
         </div>
       </div>
 
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative flex items-center gap-8">
-          <div className="text-right">
-            <h3 className="text-2xl font-bold text-white mb-1 drop-shadow-lg">
+        <div className="relative flex items-center justify-center gap-4 md:gap-8 w-full max-w-[90%] px-2">
+          <div className="text-right w-[40%] pl-2">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 drop-shadow-lg truncate pl-1">
               {fight.fighter1.name}
             </h3>
             <div className="h-1 w-24 bg-red-700 ml-auto shadow-lg shadow-red-700/20"></div>
           </div>
 
-          <div className="relative">
+          <div className="relative shrink-0 z-10">
             <div className="absolute inset-0 bg-red-700/20 blur-xl"></div>
-            <div className="relative bg-black/80 backdrop-blur-sm px-6 py-3 rounded-lg border border-red-700/50 shadow-lg shadow-red-700/10">
-              <span className="text-red-500 font-bold text-3xl tracking-wider drop-shadow-lg">
+            <div className="relative bg-black/80 backdrop-blur-sm px-3 sm:px-4 py-1 sm:py-2 rounded-lg border border-red-700/50 shadow-lg shadow-red-700/10">
+              <span className="text-red-500 font-bold text-xl sm:text-2xl tracking-wider drop-shadow-lg">
                 VS
               </span>
             </div>
           </div>
 
-          <div className="text-left">
-            <h3 className="text-2xl font-bold text-white mb-1 drop-shadow-lg">
+          <div className="text-left w-[40%] pr-2">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 drop-shadow-lg truncate pr-1">
               {fight.fighter2.name}
             </h3>
             <div className="h-1 w-24 bg-red-700 shadow-lg shadow-red-700/20"></div>

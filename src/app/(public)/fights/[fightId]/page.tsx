@@ -560,13 +560,29 @@ function ComparisonRow({
   hasStats?: boolean
 }) {
   return (
-    <div className="grid grid-cols-3 gap-2 md:gap-4 mb-4 text-center items-center">
-      <div className="text-right font-bold text-red-600 px-1 md:px-2">
-        {hasStats ? value1 || "0" : "N/A"}
+    <div className="mb-6 md:mb-4">
+      <div className="hidden md:grid md:grid-cols-3 md:gap-4 items-center text-center">
+        <div className="text-right font-bold text-red-600 px-3">
+          {hasStats ? value1 || "0" : "N/A"}
+        </div>
+        <div className="text-gray-400 px-2">{label}</div>
+        <div className="text-left font-bold text-blue-600 px-3">
+          {hasStats ? value2 || "0" : "N/A"}
+        </div>
       </div>
-      <div className="text-gray-400 px-1 md:px-0">{label}</div>
-      <div className="text-left font-bold text-blue-600 px-1 md:px-2">
-        {hasStats ? value2 || "0" : "N/A"}
+
+      <div className="flex flex-col md:hidden">
+        <div className="text-center text-gray-400 mb-2 font-medium">
+          {label}
+        </div>
+        <div className="flex justify-between items-center px-4">
+          <div className="text-center font-bold text-red-600 text-lg">
+            {hasStats ? value1 || "0" : "N/A"}
+          </div>
+          <div className="text-center font-bold text-blue-600 text-lg">
+            {hasStats ? value2 || "0" : "N/A"}
+          </div>
+        </div>
       </div>
     </div>
   )
