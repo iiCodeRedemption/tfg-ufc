@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { FightsGrid } from "@/features/fights/components/FightGrid"
+import { FightsGrid } from "@/features/fights/components/FightsGrid"
 import { Suspense } from "react"
 import { FightGridSearchSkeleton } from "@/features/fights/components/skeletons/FightGridSearchSkeleton"
 import { getAllFights } from "@/features/fights/server/db/getAllFights"
@@ -37,9 +37,6 @@ export default function FightsPage() {
 }
 
 async function FightsSection() {
-  const [fights, events] = await Promise.all([
-    getAllFights(),
-    getAllEvents()
-  ])
+  const [fights, events] = await Promise.all([getAllFights(), getAllEvents()])
   return <FightsGrid fights={fights} events={events} />
 }

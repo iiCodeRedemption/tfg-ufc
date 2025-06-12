@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Award } from "lucide-react"
 import { FightCard } from "@/features/fights/components/FightCard"
 import { formatTime } from "@/lib/formatters"
-import { Event, Fight } from "@prisma/client"
+import { Event, Fight, FightType } from "@prisma/client"
 
 type FightWithRelations = Fight & {
   fighter1: any
@@ -20,13 +20,13 @@ export function FightCardTabs({ event }: { event: EventWithFights }) {
   const [activeCard, setActiveCard] = useState("main")
 
   const mainCardFights = event.fights.filter(
-    (fight) => fight.fightType === "MAIN_EVENT"
+    (fight) => fight.fightType === FightType.MAIN_EVENT,
   )
   const prelimCardFights = event.fights.filter(
-    (fight) => fight.fightType === "PRELIMS"
+    (fight) => fight.fightType === FightType.PRELIMS,
   )
   const earlyPrelimFights = event.fights.filter(
-    (fight) => fight.fightType === "EARLY_PRELIMS"
+    (fight) => fight.fightType === FightType.EARLY_PRELIMS,
   )
 
   return (
@@ -76,8 +76,8 @@ export function FightCardTabs({ event }: { event: EventWithFights }) {
               {activeCard === "main"
                 ? "MAIN CARD"
                 : activeCard === "prelim"
-                ? "PRELIMINARY CARD"
-                : "EARLY PRELIMS"}
+                  ? "PRELIMINARY CARD"
+                  : "EARLY PRELIMS"}
             </h2>
             {activeCard === "main" && (
               <div className="ml-4 bg-red-950/40 px-3 py-1 rounded-full text-sm border border-red-950/30">
@@ -88,8 +88,8 @@ export function FightCardTabs({ event }: { event: EventWithFights }) {
               {activeCard === "main"
                 ? "PPV"
                 : activeCard === "prelim"
-                ? "ESPN"
-                : "ESPN+"}
+                  ? "ESPN"
+                  : "ESPN+"}
             </div>
           </div>
 

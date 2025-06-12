@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { FilterDropdown } from "@/components/FilterDropdown"
-import { Search, Calendar, Scale, Clock, AlertTriangle } from "lucide-react"
+import { Search, Scale, Clock, AlertTriangle } from "lucide-react"
 import { FightWithParticipants } from "@/features/fights/data/types"
 import { FightCard } from "@/features/fights/components/FightCard"
 import { Event, FightType } from "@prisma/client"
@@ -19,12 +19,6 @@ const FILTERS = {
       value: wc.name,
     })).reverse(),
   ],
-  STATUS: [
-    { label: "All fights", value: "" },
-    { label: "Upcoming", value: "upcoming" },
-    { label: "Completed", value: "completed" },
-    { label: "Cancelled", value: "cancelled" },
-  ],
   SORT_OPTIONS: [
     { label: "Date (Newest First)", value: "date_desc" },
     { label: "Date (Oldest First)", value: "date_asc" },
@@ -32,12 +26,13 @@ const FILTERS = {
   ],
 }
 
-interface FightsGridProps {
+export function FightsGrid({
+  fights,
+  events,
+}: {
   fights: FightWithParticipants[]
   events: Event[]
-}
-
-export function FightsGrid({ fights, events }: FightsGridProps) {
+}) {
   const [selectedWeightClass, setSelectedWeightClass] = useState("")
   const [selectedStatus, setSelectedStatus] = useState("")
   const [selectedEvent, setSelectedEvent] = useState("")
@@ -67,10 +62,6 @@ export function FightsGrid({ fights, events }: FightsGridProps) {
           return calculatedWeightClass === selectedWeightClass
         }
 
-        return false
-      }
-
-      if (selectedStatus && fight.status !== selectedStatus) {
         return false
       }
 
@@ -192,19 +183,6 @@ export function FightsGrid({ fights, events }: FightsGridProps) {
                     options={FILTERS.WEIGHT_CLASSES}
                     value={selectedWeightClass}
                     onChange={setSelectedWeightClass}
-                  />
-                </div>
-
-                <div>
-                  <p className="text-gray-300 mb-2 text-lg flex items-center gap-2">
-                    <Calendar className="w-5 h-5" />
-                    Status
-                  </p>
-                  <FilterDropdown
-                    label="Select status..."
-                    options={FILTERS.STATUS}
-                    value={selectedStatus}
-                    onChange={setSelectedStatus}
                   />
                 </div>
 
