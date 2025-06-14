@@ -189,6 +189,8 @@ function NavbarMobile({
           ),
         )}
       </Accordion>
+
+      <div className="p-4 border-t border-[#333]">{children}</div>
     </div>
   )
 }
