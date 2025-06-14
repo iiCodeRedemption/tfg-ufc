@@ -189,19 +189,6 @@ function NavbarMobile({
           ),
         )}
       </Accordion>
-
-      <div className="p-4 border-t border-[#333]">
-        <div className="mb-4">{children}</div>
-        <Button
-          variant="ghost"
-          aria-label="Search"
-          className="w-full text-left py-4 px-4 hover:text-[#d20a0a] transition-colors justify-start"
-          onClick={() => setIsOpen(false)}
-        >
-          <Search className="h-5 w-5 mr-2" />
-          Search
-        </Button>
-      </div>
     </div>
   )
 }
