@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Dispatch, ReactNode, useState } from "react"
-import { Menu, Search, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import {
   NavigationMenu,
   NavigationMenuContent,
