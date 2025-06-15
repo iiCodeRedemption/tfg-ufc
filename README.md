@@ -1,6 +1,6 @@
 # TFG UFC
 
-This is the capstone project (TFG) for the Higher Education in Web Application Development (DAW).
+This is the capstone project (TFG) for the Higher Education in Web Application Development (DAW). This is the production repo. You can access the old repository by clicking [here](https://github.com/iiCodeRedemption/tfg-ufc-demo).
 
 ## Authors
 
