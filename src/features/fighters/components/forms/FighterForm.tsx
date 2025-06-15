@@ -445,7 +445,7 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
                   <FormLabel className="text-gray-200">Height</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="e.g. 5'11"
+                      placeholder="e.g. 170cm"
                       className="bg-[#1a1a1a] border-[#333] text-white focus-visible:ring-[#d20a0a]"
                       {...field}
                     />
@@ -483,7 +483,7 @@ export function FighterForm({ fighter }: { fighter?: FighterWithDetails }) {
                   <FormLabel className="text-gray-200">Weight</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="e.g. 155"
+                      placeholder="e.g. 80kg"
                       className="bg-[#1a1a1a] border-[#333] text-white focus-visible:ring-[#d20a0a]"
                       {...field}
                     />
